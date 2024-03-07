@@ -85,6 +85,7 @@ u64 GetFileLastWriteTimestamp(const char *filepath);
  * It logs a string to whichever outputs are configured in the platform layer.
  * By default, the string is printed in the output console of VisualStudio.
  */
+
 void LogString(const char* str);
 
 #define ILOG(...)                 \
