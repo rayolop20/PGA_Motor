@@ -101,9 +101,15 @@
     <ClInclude Include="Code\BufferSupFuncs.h">
       <Filter>Engine</Filter>
     </ClInclude>
+    <ClInclude Include="Code\ModelLoadingFuncs.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="WorkingDir\shaders.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="WorkingDir\Patrick\base_model.glsl">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>
