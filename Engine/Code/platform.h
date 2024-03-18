@@ -9,15 +9,11 @@
 #include <stdio.h>
 #include <assert.h>
 #include <math.h>
-
 #include <vector>
 #include <string>
 #include "Globals.h"
 
 #pragma warning(disable : 4267) // conversion from X to Y, possible loss of data
-
-
-
 
 String MakeString(const char *cstr);
 
@@ -41,5 +37,4 @@ u64 GetFileLastWriteTimestamp(const char *filepath);
  * It logs a string to whichever outputs are configured in the platform layer.
  * By default, the string is printed in the output console of VisualStudio.
  */
-
 void LogString(const char* str);
