@@ -215,7 +215,13 @@ void Init(App* app)
 
     //app->texturedGeometryProgramIdx = LoadProgram(app, "shaders.glsl", "TEXTURED_GEOMETRY");
     //const Program& texturedGeometryProgram = app->programs[app->texturedGeometryProgramIdx];
+    
+    
+
     //app->programUniformTexture = glGetUniformLocation(texturedGeometryProgram.handle, "uTexture");
+
+
+    glEnable(GL_DEPTH_TEST);
 
     app->texturedMeshProgramIdx = LoadProgram(app, "base_model.glsl", "BASE_MODEL");
     const Program& texturedMeshProgram = app->programs[app->texturedMeshProgramIdx];
@@ -240,12 +246,48 @@ void Update(App* app)
     // You can handle app->input keyboard/mouse here
 }
 
+glm::mat4 TransformScale(const vec3& scaleFactors) {
+    return glm::scale(scaleFactors);
+}
+
+glm::mat4 TransformPositionScale(const vec3& position,const vec3& scaleFactors) {
+    
+    
+    glm::mat4 ReturnValue = glm::translate(position);
+    
+    ReturnValue = glm::scale(ReturnValue, scaleFactors);
+    
+    return ReturnValue;
+}
+
+
+
 void Render(App* app)
 {
     switch (app->mode)
     {
         case Mode_TexturedQuad:
         {
+            //camera
+            float aspectRatio = (float)app->displaySize.x / (float)app->displaySize.y;
+            float znear = 0.1f;
+            float zfar = 1000.0f;
+            glm::mat4 projection = glm::perspective(glm::radians(60.0f), aspectRatio, znear, zfar);
+
+            vec3 target = vec3(0.f, 0.f, 0.f);
+            vec3 camPosition = vec3(5.0, 5.0, 5.0);
+
+            vec3 zCam = glm::normalize(camPosition - target);
+            vec3 xCam = glm::cross(zCam, vec3(0, 1, 0));
+            vec3 yCam = glm::cross(xCam, zCam);
+
+            glm::mat4 view = glm::lookAt(camPosition, target,yCam);
+
+            glm::mat4 world = TransformPositionScale(vec3(0.f,glm::sin(app->deltaTime * 10) * 10.0, 0.0), vec3(0.45f));
+            glm::mat4 WVP = projection * view * world;
+
+   
+
             glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -256,6 +298,12 @@ void Render(App* app)
 
             Model& model = app->models[app->patricioModel];
             Mesh& mesh = app->meshes[model.meshIdx];
+
+            glUniformMatrix4fv(glGetUniformLocation(texturedMeshProgram.handle, "WVP"), 1, GL_FALSE, &WVP[0][0]);
+
+
+
+
 
             for (u32 i = 0; i < mesh.submeshes.size(); ++i)
             {
