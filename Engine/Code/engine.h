@@ -79,7 +79,14 @@ struct App
     GLint maxUniformBufferSize;
     GLint uniformBlockAlignment; //Alignment between uniform BLOCKS!!!!
     Buffer localUniformBuffer;
+
     std::vector<Entity> entities;
+    std::vector<Light> lights;
+
+    GLuint globalParamsOffset;
+    GLuint globalParamsSize;
+
+
 
 };
 
