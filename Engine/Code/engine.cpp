@@ -242,8 +242,8 @@ void Init(App* app)
 
     //framebuffer
 
-    glGenTextures(1, &app->colorAttchmentHandle);
-    glBindTexture(GL_TEXTURE_2D, app->colorAttchmentHandle);
+    glGenTextures(1, &app->colorAttachmentHandle);
+    glBindTexture(GL_TEXTURE_2D, app->colorAttachmentHandle);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, app->displaySize.x, app->displaySize.y,0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -265,9 +265,9 @@ void Init(App* app)
 
 
     glGenFramebuffers(1, &app->frameBufferHandle);
-    glBindTexture(GL_TEXTURE_2D, app->frameBufferHandle);
+    glBindTexture(GL_FRAMEBUFFER, app->frameBufferHandle);
 
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, app->colorAttchmentHandle, 0);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, app->colorAttachmentHandle, 0);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depathAttchmentHandle, 0);
 
     GLuint drawBuffers[] = { GL_COLOR_ATTACHMENT0 };
@@ -336,7 +336,7 @@ void Render(App* app)
         glViewport(0, 0, app->displaySize.x, app->displaySize.y);
 
         glBindFramebuffer(GL_FRAMEBUFFER, app->frameBufferHandle);
-        GLuint drawBuffers[] = { app->colorAttchmentHandle };
+        GLuint drawBuffers[] = { app->colorAttachmentHandle };
         glDrawBuffers(ARRAY_COUNT(drawBuffers), drawBuffers);
 
         glClearColor(0.f, 0.f, 0.f, 0.f);
