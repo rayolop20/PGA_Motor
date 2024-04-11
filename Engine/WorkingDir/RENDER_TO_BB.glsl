@@ -1,4 +1,4 @@
-#ifdef BASE_MODEL
+#ifdef RENDER_TO_BB
 
 #if defined(VERTEX) ///////////////////////////////////////////////////
 
@@ -71,6 +71,11 @@ layout(binding = 0, std140) uniform GlobalParams
 };
 
 
+
+uniform sampler2D iAlbedo;
+uniform sampler2D iNormals;
+uniform sampler2D iPosition;
+
 in vec2 vTexCoord;
 in vec3 vPosition;
 in vec3 vNormal;  
@@ -128,7 +133,7 @@ void main()
 			float constant = 1.0;
 			float linear = 0.09;
 			float quadratic = 0.032;
-			float distance = length(light.position - vPosition);
+			float distance = length(light.position - texture(iPosition, vTextCoord).xyz);
 			float atenuation = 1.0 / (constant + linear * distance + quadratic * (distance * distance));
 
 			lightResult = (ambient * atenuation) + (diffuse * atenuation) + (specular * atenuation);
