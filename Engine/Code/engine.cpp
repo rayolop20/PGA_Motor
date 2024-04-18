@@ -299,7 +299,7 @@ void Init(App* app)
     const Program& texturedMeshProgram = app->programs[app->renderToFrameBufferShader];
     app->texturedMeshProgram_uTexture = glGetUniformLocation(texturedMeshProgram.handle, "uTexture");
     u32 PatrickModelIndex = ModelLoader::LoadModel(app, "Patrick/Patrick.obj");
-   // u32 GroundModelIndex = ModelLoader::LoadModel(app, "Patrick/Ground.obj");
+    u32 GroundModelIndex = ModelLoader::LoadModel(app, "Patrick/Ground.obj");
 
     VertexBufferLayout vertexBufferLayout = {};
     vertexBufferLayout.attributes.push_back(VertexBufferAttribute{ 0, 3, 0 });
@@ -319,7 +319,7 @@ void Init(App* app)
     app->entities.push_back({ TransformPositionScale(vec3(2.f, 2.0f, 1.0), vec3(0.45f)),PatrickModelIndex,0,0 });
     app->entities.push_back({ TransformPositionScale(vec3(3.f, 2.0f, 1.0), vec3(0.45f)),PatrickModelIndex,0,0 });
 
-   // app->entities.push_back({ TransformPositionScale(vec3(0.0, -3.0, 0.0), vec3(1.0, 1.0, 1.0)), GroundModelIndex, 0, 0 });
+    app->entities.push_back({ TransformPositionScale(vec3(0.0, -3.0, 0.0), vec3(1.0, 1.0, 1.0)), GroundModelIndex, 0, 0 });
 
     app->lights.push_back({ LightType::LightType_Directional,vec3(1.0,1.0,1.0),vec3(1.0,-1.0,1.0),vec3(1.0,0.0,0.0) });
     app->lights.push_back({ LightType::LightType_Point,vec3(1.0,0.0,0.0),vec3(1.0,1.0,1.0),vec3(0.0,1.0,1.0) });
