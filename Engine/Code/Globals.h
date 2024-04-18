@@ -137,9 +137,9 @@ struct Model
 
 enum Mode
 {
-    Mode_Forward,
-    Mode_deffered,
-    Mode_Count
+   Mode_Forward,
+   Mode_Deferred,
+   Mode_Count
 };
 
 struct VertexV3V2
@@ -167,7 +167,8 @@ struct Material
     u32             bumpTextureIdx;
 };
 
-struct Buffer {
+struct Buffer 
+{
     GLsizei size;
     GLenum type;
     GLuint handle;
@@ -183,11 +184,10 @@ struct Entity
     u32 localParamsSize;
 };
 
-enum LightType 
+enum LightType
 {
-   LightType_Directional,
-   LightType_Point
- 
+    LightType_Directional,
+    LightType_Point
 };
 
 struct Light
@@ -201,8 +201,8 @@ struct Light
 struct FrameBuffer
 {
     GLuint fbHandle;
-    std::vector<GLuint> colorAttachment;
     GLuint depthHandle;
+    std::vector<GLuint> ColorAttachment;
 };
 
 #define ILOG(...)                 \

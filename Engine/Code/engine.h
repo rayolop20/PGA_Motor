@@ -5,15 +5,15 @@
 #pragma once
 
 #include "platform.h"
-#include "BufferSuppFunctions.h"
-#include "ModelLoadingFunctions.h"
+#include "BufferSupFuncs.h"
+#include "ModelLoadingFuncs.h"
 #include "Globals.h"
 
 const VertexV3V2 vertices[] = {
-    {glm::vec3(-0.5,-0.5,0.0), glm::vec2(0.0,0.0)},
-    {glm::vec3(0.5,-0.5,0.0), glm::vec2(1.0,0.0)},
-    {glm::vec3(0.5,0.5,0.0), glm::vec2(1.0,1.0)},
-    {glm::vec3(-0.5,0.5,0.0), glm::vec2(0.0,1.0)},
+    {glm::vec3(-1.0,-1.0,0.0), glm::vec2(0.0,0.0)},
+    {glm::vec3(1.0,-1.0,0.0), glm::vec2(1.0,0.0)},
+    {glm::vec3(1.0,1.0,0.0), glm::vec2(1.0,1.0)},
+    {glm::vec3(-1.0,1.0,0.0), glm::vec2(0.0,1.0)},
 };
 
 const u16 indices[] =
@@ -24,11 +24,15 @@ const u16 indices[] =
 
 struct App
 {
-
+    void ColorAttachment(GLuint& colorAttachmentHandle);
+    void DepthAttachment(GLuint& depthAttachmentHandle);
     void UpdateEntityBuffer();
-    void ConfigureFrameBuffer(FrameBuffer& aConfigFB);
 
-    void RenderGeometry(const Program& aBindedProgram);
+    void ConfigureFrameBuffer(FrameBuffer& aConfigFB);
+    void RenderGeometry(const Program& texturedMeshProgram);
+
+    const GLuint CreateTexture(const bool isFloatingPoint = false);
+
     // Loop
     f32  deltaTime;
     bool isRunning;
@@ -49,8 +53,12 @@ struct App
     std::vector<Program>    programs;
 
     GLuint renderToBackBufferShader;
-        GLuint renderToFrameBufferShader;
-        GLuint framebufferToQuadshader;
+    GLuint renderToFrameBufferShader;
+    GLuint freamebufferToQuadShader;
+
+    // program indices
+    u32 texturedGeometryProgramIdx = 0;
+    u32 texturedMeshProgramIdx = 0;
 
     u32 patricioModel = 0;
     GLuint texturedMeshProgram_uTexture;
@@ -79,19 +87,15 @@ struct App
     std::string openglDebugInfo;
 
     GLint maxUniformBufferSize;
-    GLint uniformBlockAlignment; //Alignment between uniform BLOCKS!!!!
+    GLint uniformBlockAligment;
     Buffer localUniformBuffer;
-
     std::vector<Entity> entities;
     std::vector<Light> lights;
 
     GLuint globalParamsOffset;
     GLuint globalParamsSize;
 
-    FrameBuffer defferedFrameBuffer;
-
-
-
+    FrameBuffer defferredFrameBuffer;
 };
 
 void Init(App* app);
