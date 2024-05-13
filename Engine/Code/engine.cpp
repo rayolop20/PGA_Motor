@@ -361,7 +361,15 @@ void Gui(App* app)
 
 void Update(App* app)
 {
-    // You can handle app->input keyboard/mouse here
+    const float cameraSpeed = 0.5f *  app->deltaTime; // adjust accordingly
+    if (glfwGetKey(glfwGetCurrentContext(), GLFW_KEY_W) == GLFW_PRESS)
+        app->cameraPosition += cameraSpeed * app->cameraFront;
+    if (glfwGetKey(glfwGetCurrentContext(), GLFW_KEY_S) == GLFW_PRESS)
+        app->cameraPosition -= cameraSpeed * app->cameraFront;
+    if (glfwGetKey(glfwGetCurrentContext(), GLFW_KEY_A) == GLFW_PRESS)
+        app->cameraPosition -= glm::normalize(glm::cross(app->cameraFront, app->cameraUp)) * cameraSpeed;
+    if (glfwGetKey(glfwGetCurrentContext(), GLFW_KEY_D) == GLFW_PRESS)
+        app->cameraPosition += glm::normalize(glm::cross(app->cameraFront, app->cameraUp)) * cameraSpeed;
 }
 
 glm::mat4 TransformScale(const vec3& scaleFactors)
@@ -514,14 +522,19 @@ void App::UpdateEntityBuffer()
     float zfar = 1000.0f;
     glm::mat4 projection = glm::perspective(glm::radians(60.0f), aspectRatio, znear, zfar);
 
-    vec3 target = vec3(0.f, 0.f, 0.f);
-    vec3 cameraPosition = vec3(5.0, 5.0, 5.0);
+
 
     vec3 zCam = glm::normalize(cameraPosition - target);
     vec3 xCam = glm::cross(zCam, vec3(0, 1, 0));
     vec3 yCam = glm::cross(xCam, zCam);
 
-    glm::mat4 view = glm::lookAt(cameraPosition, target, yCam);
+    //glm::mat4 view = glm::lookAt(cameraPosition, target, yCam);
+
+   
+
+
+    glm::mat4 view;
+    view = lookAt(cameraPosition, cameraPosition + cameraFront, cameraUp);
 
     BufferManager::MapBuffer(localUniformBuffer, GL_WRITE_ONLY);
 

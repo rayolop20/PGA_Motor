@@ -96,6 +96,11 @@ struct App
     GLuint globalParamsSize;
 
     FrameBuffer defferredFrameBuffer;
+
+    vec3 target = vec3(0.f, 0.f, 0.f);
+    vec3 cameraPosition = vec3(5.0, 5.0, 5.0);
+    vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
+    vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 };
 
 void Init(App* app);
