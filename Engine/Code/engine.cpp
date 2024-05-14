@@ -361,7 +361,7 @@ void Gui(App* app)
 
 void Update(App* app)
 {
-    const float cameraSpeed = 0.5f *  app->deltaTime; // adjust accordingly
+    const float cameraSpeed = 2.5f *  app->deltaTime; // adjust accordingly
     if (glfwGetKey(glfwGetCurrentContext(), GLFW_KEY_W) == GLFW_PRESS)
         app->cameraPosition += cameraSpeed * app->cameraFront;
     if (glfwGetKey(glfwGetCurrentContext(), GLFW_KEY_S) == GLFW_PRESS)

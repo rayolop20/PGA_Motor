@@ -40,6 +40,10 @@ struct App
     // Input
     Input input;
 
+    float yaw = -90.0f;
+    float pitch = 0.0f; 
+    bool firstMouse = true;
+
     // Graphics
     char gpuName[64];
     char openGlVersion[64];
