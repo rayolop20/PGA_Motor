@@ -22,6 +22,17 @@ const u16 indices[] =
     0,2,3
 };
 
+struct Camera
+{
+    float fovYRad;
+    float aspectRatio = 0.0;
+    float znear = 0.1;
+    float zfar = 1000.0;
+
+    vec4 getTopBottomLeftRight();
+
+};
+
 struct App
 {
     void ColorAttachment(GLuint& colorAttachmentHandle);
@@ -59,6 +70,8 @@ struct App
     GLuint renderToBackBufferShader;
     GLuint renderToFrameBufferShader;
     GLuint freamebufferToQuadShader;
+    GLuint gridRenderShader;
+
 
     // program indices
     u32 texturedGeometryProgramIdx = 0;
@@ -105,6 +118,9 @@ struct App
     vec3 cameraPosition = vec3(5.0, 5.0, 5.0);
     vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
     vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
+
+    Camera camera;
+
 };
 
 void Init(App* app);

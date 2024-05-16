@@ -234,6 +234,7 @@ void App::ConfigureFrameBuffer(FrameBuffer& aConfigFB)
     aConfigFB.ColorAttachment.push_back(CreateTexture(true));
     aConfigFB.ColorAttachment.push_back(CreateTexture(true));
     aConfigFB.ColorAttachment.push_back(CreateTexture(true));
+    aConfigFB.ColorAttachment.push_back(CreateTexture());
 
     DepthAttachment(aConfigFB.depthHandle);
     glGenFramebuffers(1, &aConfigFB.fbHandle);
@@ -294,6 +295,7 @@ void Init(App* app)
     app->renderToBackBufferShader = LoadProgram(app, "RENDER_TO_BB.glsl", "RENDER_TO_BB");
     app->renderToFrameBufferShader = LoadProgram(app, "RENDER_TO_FB.glsl", "RENDER_TO_FB");
     app->freamebufferToQuadShader = LoadProgram(app, "FB_TO_BB.glsl", "FB_TO_BB");
+    app->gridRenderShader = LoadProgram(app, "PRGrid.glsl", "GRID_SHADER");
 
     //app->texturedMeshProgramIdx = LoadProgram(app, "base_model.glsl", "BASE_MODEL");
     const Program& texturedMeshProgram = app->programs[app->renderToFrameBufferShader];
@@ -411,8 +413,7 @@ void Render(App* app)
 
         glBindFramebuffer(GL_FRAMEBUFFER, app->defferredFrameBuffer.fbHandle);
 
-        GLuint drawBuffers[] = { app->defferredFrameBuffer.fbHandle };
-        glDrawBuffers(app->defferredFrameBuffer.ColorAttachment.size(), drawBuffers);
+        glDrawBuffers(app->defferredFrameBuffer.ColorAttachment.size(), app->defferredFrameBuffer.ColorAttachment.data());
 
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -420,8 +421,47 @@ void Render(App* app)
         const Program& texturedMeshProgram = app->programs[app->renderToFrameBufferShader];
         glUseProgram(texturedMeshProgram.handle);
         app->RenderGeometry(texturedMeshProgram);
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        
 
+        //RENDER GRID TO CA
+        GLuint drawBuffers[] = { GL_COLOR_ATTACHMENT4 };
+        glDrawBuffers(1, drawBuffers);
+
+        glEnable(GL_DEPTH_TEST);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC0_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+      
+
+        GLuint gridHandle = app->programs[app->gridRenderShader].handle;
+        glUseProgram(gridHandle);
+
+        vec4 tbrl = app->camera.getTopBottomLeftRight();
+        glUniform1f(glGetUniformLocation(gridHandle, "left"), tbrl.x);
+        glUniform1f(glGetUniformLocation(gridHandle, "right"), tbrl.y);
+        glUniform1f(glGetUniformLocation(gridHandle, "bottom"), tbrl.z);
+        glUniform1f(glGetUniformLocation(gridHandle, "top"), tbrl.w);
+        glUniform1f(glGetUniformLocation(gridHandle, "znear"),app->camera.znear);
+
+        glm::mat4 translationmMatrix = glm::translate(glm::mat4(1.0), app->cameraPosition);
+        glm::mat4 yawMatrix = glm::rotate(glm::mat4(1.0), glm::radians(app->yaw), glm::vec3(0.0, 1.0, 0.0));
+        glm::mat4 pitchwMatrix = glm::rotate(glm::mat4(1.0), glm::radians(app->pitch), glm::vec3(1.0, .0, 0.0));
+        glm::mat4 rotationMatrix = yawMatrix * pitchwMatrix;
+        glm::mat4 cameraWorldMatrix = translationmMatrix * rotationMatrix;
+ 
+        glUniformMatrix4fv(glGetUniformLocation(gridHandle, "worldmatrix"), 1, GL_FALSE, &cameraWorldMatrix[0][0]);
+
+
+
+        glBindVertexArray(app->vao);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
+
+        glBindVertexArray(0);
+        glUseProgram(0);
+
+        //
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        glDisable(GL_BLEND)
+            ,
         //Render to BB ColorAtt
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -517,10 +557,9 @@ const GLuint App::CreateTexture(const bool isFloatingPoint)
 
 void App::UpdateEntityBuffer()
 {
-    float aspectRatio = (float)displaySize.x / (float)displaySize.y;
-    float znear = 0.1f;
-    float zfar = 1000.0f;
-    glm::mat4 projection = glm::perspective(glm::radians(60.0f), aspectRatio, znear, zfar);
+    camera.aspectRatio = (float)displaySize.x / (float)displaySize.y;
+    camera.fovYRad = glm::radians(60.0f);
+    glm::mat4 projection = glm::perspective(glm::radians(60.0f), camera.aspectRatio, camera.znear, camera.zfar);
 
 
 
@@ -529,9 +568,6 @@ void App::UpdateEntityBuffer()
     vec3 yCam = glm::cross(xCam, zCam);
 
     //glm::mat4 view = glm::lookAt(cameraPosition, target, yCam);
-
-   
-
 
     glm::mat4 view;
     view = lookAt(cameraPosition, cameraPosition + cameraFront, cameraUp);
@@ -569,4 +605,21 @@ void App::UpdateEntityBuffer()
         ++iteration;
     }
     BufferManager::UnmapBuffer(localUniformBuffer);
+}
+
+vec4 Camera::getTopBottomLeftRight() {
+    vec4 ReturnValue;
+
+    ReturnValue.x = tan(fovYRad / 2) * znear;
+
+    ReturnValue.y = -ReturnValue.x;
+
+    ReturnValue.x = ReturnValue.x * aspectRatio;
+
+
+    ReturnValue.w = ReturnValue.z;
+
+    return ReturnValue;
+
+
 }
