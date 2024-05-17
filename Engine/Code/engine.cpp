@@ -300,6 +300,8 @@ void Init(App* app)
     app->texturedMeshProgram_uTexture = glGetUniformLocation(texturedMeshProgram.handle, "uTexture");
     u32 PatrickModelIndex = ModelLoader::LoadModel(app, "Patrick/Patrick.obj");
     u32 GroundModelIndex = ModelLoader::LoadModel(app, "Patrick/Ground.obj");
+    u32 SphereLModelIndex = ModelLoader::LoadModel(app, "PointLightSphere/pointLightSphere.obj");
+    u32 QuadLModelIndex = ModelLoader::LoadModel(app, "DirectionalLightQuad/QuadLightTexture.obj");
 
     VertexBufferLayout vertexBufferLayout = {};
     vertexBufferLayout.attributes.push_back(VertexBufferAttribute{ 0, 3, 0 });
@@ -315,10 +317,15 @@ void Init(App* app)
     app->localUniformBuffer = CreateConstantBuffer(app->maxUniformBufferSize);
 
     app->entities.push_back({ TransformPositionScale(vec3(0.f, 2.0f, 1.0), vec3(0.45f)),PatrickModelIndex,0,0 });
-    app->entities.push_back({ TransformPositionScale(vec3(1.f, 2.0f, 1.0), vec3(0.45f)),PatrickModelIndex,0,0 });
-    app->entities.push_back({ TransformPositionScale(vec3(2.f, 2.0f, 1.0), vec3(0.45f)),PatrickModelIndex,0,0 });
-    app->entities.push_back({ TransformPositionScale(vec3(3.f, 2.0f, 1.0), vec3(0.45f)),PatrickModelIndex,0,0 });
+   //app->entities.push_back({ TransformPositionScale(vec3(1.f, 2.0f, 1.0), vec3(0.45f)),PatrickModelIndex,0,0 });
+   //app->entities.push_back({ TransformPositionScale(vec3(2.f, 2.0f, 1.0), vec3(0.45f)),PatrickModelIndex,0,0 });
 
+   //app->entities.push_back({ TransformPositionScale(vec3(3.f, 2.0f, 1.0), vec3(0.45f)),PatrickModelIndex,0,0 });
+   
+    app->entities.push_back({ TransformPositionScale(vec3(1.f, 2.0f, 1.0), vec3(0.45f)),SphereLModelIndex,0,0 });
+    app->entities.push_back({ TransformPositionScale(vec3(3.f, 2.0f, 1.0), vec3(0.45f)),QuadLModelIndex,0,0 });
+    
+    app->entities.push_back({ TransformPositionScale(vec3(2.f, 2.0f, 1.0), vec3(0.45f)),PatrickModelIndex,0,0 });
     app->entities.push_back({ TransformPositionScale(vec3(0.0, -3.0, 0.0), vec3(1.0, 1.0, 1.0)), GroundModelIndex, 0, 0 });
 
     app->lights.push_back({ LightType::LightType_Directional,vec3(1.0,1.0,1.0),vec3(1.0,-1.0,1.0),vec3(1.0,0.0,0.0) });
@@ -355,6 +362,7 @@ void Gui(App* app)
         {
             ImGui::Image((ImTextureID)app->defferredFrameBuffer.ColorAttachment[i], ImVec2(250, 150), ImVec2(0, 1), ImVec2(1, 0));
         }
+        ImGui::Image((ImTextureID)app->defferredFrameBuffer.depthHandle, ImVec2(250, 150), ImVec2(0, 1), ImVec2(1, 0));
     }
     ImGui::End();
 }
@@ -411,8 +419,8 @@ void Render(App* app)
 
         glBindFramebuffer(GL_FRAMEBUFFER, app->defferredFrameBuffer.fbHandle);
 
-        GLuint drawBuffers[] = { app->defferredFrameBuffer.fbHandle };
-        glDrawBuffers(app->defferredFrameBuffer.ColorAttachment.size(), drawBuffers);
+       
+        glDrawBuffers(app->defferredFrameBuffer.ColorAttachment.size(), app->defferredFrameBuffer.ColorAttachment.data());
 
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
