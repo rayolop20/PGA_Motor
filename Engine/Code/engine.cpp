@@ -303,6 +303,7 @@ void Init(App* app)
     u32 SphereLModelIndex = ModelLoader::LoadModel(app, "PointLightSphere/pointLightSphere.obj");
     u32 QuadLModelIndex = ModelLoader::LoadModel(app, "DirectionalLightQuad/QuadLightTexture.obj");
     u32 PenguinModelIndex = ModelLoader::LoadModel(app, "Penguin/PenguinBaseMesh.obj");
+    u32 SkullModelIndex = ModelLoader::LoadModel(app, "Skull/Skull.obj");
 
     VertexBufferLayout vertexBufferLayout = {};
     vertexBufferLayout.attributes.push_back(VertexBufferAttribute{ 0, 3, 0 });
@@ -317,20 +318,33 @@ void Init(App* app)
 
     app->localUniformBuffer = CreateConstantBuffer(app->maxUniformBufferSize);
 
-    app->entities.push_back({ TransformPositionScale(vec3(0.f, 2.0f, 1.0), vec3(0.45f)),PatrickModelIndex,0,0 });
-   //app->entities.push_back({ TransformPositionScale(vec3(1.f, 2.0f, 1.0), vec3(0.45f)),PatrickModelIndex,0,0 });
-   //app->entities.push_back({ TransformPositionScale(vec3(2.f, 2.0f, 1.0), vec3(0.45f)),PatrickModelIndex,0,0 });
-
-   //app->entities.push_back({ TransformPositionScale(vec3(3.f, 2.0f, 1.0), vec3(0.45f)),PatrickModelIndex,0,0 });
-   
-    app->entities.push_back({ TransformPositionScale(vec3(1.f, 2.0f, 1.0), vec3(0.45f)),SphereLModelIndex,0,0 });
-    app->entities.push_back({ TransformPositionScale(vec3(3.f, 2.0f, 1.0), vec3(0.45f)),QuadLModelIndex,0,0 });
-    app->entities.push_back({ TransformPositionScale(vec3(2.f, 2.0f, 1.0), vec3(0.45f)),PenguinModelIndex,0,0 });
-
+    //entities
+    app->entities.push_back({ TransformPositionScale(vec3(0.f, 2.0f, 1.0), vec3(0.45f)),PatrickModelIndex,0,0 });   
+    app->entities.push_back({ TransformPositionScale(vec3(2.f, 2.0f, 1.0), vec3(1.45f)),PenguinModelIndex,0,0 });
+    app->entities.push_back({ TransformPositionScale(vec3(1.f, 2.0f, -2.0), vec3(1.45f)),PenguinModelIndex,0,0 });
+    app->entities.push_back({ TransformPositionScale(vec3(3.f, 2.0f, -2.0), vec3(1.45f)),PenguinModelIndex,0,0 });
     app->entities.push_back({ TransformPositionScale(vec3(0.0, -3.0, 0.0), vec3(1.0, 1.0, 1.0)), GroundModelIndex, 0, 0 });
+    app->entities.push_back({ TransformPositionScale(vec3(5.0, 2.0f, 0.0), vec3(0.05)), SkullModelIndex, 0, 0 });
 
-    app->lights.push_back({ LightType::LightType_Directional,vec3(1.0,1.0,1.0),vec3(1.0,-1.0,1.0),vec3(1.0,0.0,0.0) });
-    app->lights.push_back({ LightType::LightType_Point,vec3(1.0,0.0,0.0),vec3(1.0,1.0,1.0),vec3(0.0,1.0,1.0) });
+    //lights
+   
+    app->lights.push_back({ LightType::LightType_Point,vec3(1.0,0.0,0.0),vec3(1.0,1.0,1.0),vec3(5.0,1.0,4.0) });
+    app->lights.push_back({ LightType::LightType_Point,vec3(1.0,0.0,0.0),vec3(1.0,1.0,1.0),vec3(2.0,1.0,-5.0) });
+    app->lights.push_back({ LightType::LightType_Point,vec3(1.0,1.0,0.0),vec3(1.0,1.0,1.0),vec3(4.0,0.0,6.0) });
+    app->lights.push_back({ LightType::LightType_Point,vec3(0.0,0.0,1.0),vec3(1.0,1.0,1.0),vec3(-2.0,-1.0,3.0) });
+   // app->entities.push_back({ TransformPositionScale(vec3(5.0,1.0,4.0), vec3(0.3f)),SphereLModelIndex,0,0 });
+    app->entities.push_back({ TransformPositionScale(vec3(4.0,0.0,6.0), vec3(0.3f)),SphereLModelIndex,0,0 });
+    app->entities.push_back({ TransformPositionScale(vec3(2.0,1.0,-5.0), vec3(0.3f)),SphereLModelIndex,0,0 });
+    app->entities.push_back({ TransformPositionScale(vec3(-2.0,-1.0,3.0), vec3(0.3f)),SphereLModelIndex,0,0 });
+
+
+
+   app->lights.push_back({ LightType::LightType_Directional,vec3(0.0,0.0,1.0),vec3(0.0,0.0,-1.0),vec3(0.0,2.0,-6.0) });
+   app->lights.push_back({ LightType::LightType_Directional,vec3(1.0,1.0,1.0),vec3(0.0,-1.0,0),vec3(0.0f, -1.0f, -0.0) });
+   //app->lights.push_back({ LightType::LightType_Directional,vec3(1.0,1.0,1.0),vec3(1.0,-1.0,1.0),vec3(10.0,0.0,3.0) });
+    app->entities.push_back({ TransformPositionScale(vec3(0.0,2.0,-6.0), vec3(0.3f)),QuadLModelIndex,0,0 });
+    app->entities.push_back({ TransformPositionScale(vec3(0.0f, -1.0f, -0.0), vec3(0.3f)),QuadLModelIndex,0,0 });
+   // app->entities.push_back({ TransformPositionScale(vec3(3.0,0.0,3.0), vec3(0.45f)),QuadLModelIndex,0,0 });
 
     app->ConfigureFrameBuffer(app->defferredFrameBuffer);
 
