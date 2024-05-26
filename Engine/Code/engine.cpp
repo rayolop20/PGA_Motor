@@ -4,12 +4,49 @@
 // input platform events (e.g to move the camera or react to certain shortcuts), writing some
 // graphics related GUI options, and so on.
 //
+#define STB_IMAGE_IMPLEMENTATION
 
 #include "engine.h"
 #include <imgui.h>
 #include <stb_image.h>
 #include <stb_image_write.h>
 #include "Globals.h"
+using namespace std;
+
+float skyboxVertices[] = {
+    -1.0f,  -1.0f, 1.0f,
+     1.0f,  -1.0f, 1.0f,
+     1.0f, -1.0f, -1.0f,
+    -1.0f, -1.0f, -1.0f,
+
+     -1.0f, 1.0f, 1.0f,
+     1.0f,  1.0f, 1.0f,
+     1.0f,  1.0f, -1.0f,
+    -1.0f,  1.0f, -1.0f,
+};
+
+
+unsigned int skybocIndices[] = {
+    1,2,6,
+    6,5,1,
+    
+    0,4,7,
+    7,3,0,
+    
+    4,5,6,
+    6,7,4,
+    
+    0,3,2,
+    2,1,2,
+
+    0,1,5,
+    5,4,0,
+
+    3,7,6,
+    6,2,3,
+
+
+};
 
 GLuint CreateProgramFromSource(String programSource, const char* shaderName)
 {
@@ -290,6 +327,56 @@ void Init(App* app)
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, app->embeddedElements);
     glBindVertexArray(0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    unsigned char* facePixels[6];
+    unsigned int textureID;
+    glGenTextures(1, &textureID);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
+
+    int width, height, nrChannels;
+    unsigned char* data;
+    for (unsigned int i = 0; i < 6; i++)
+    {
+
+        glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, facePixels[i]);
+    }
+
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
+
+    int w = 0;
+    int h = 0;
+    int comp = 0;
+    float* hdrData = nullptr;
+    const char* filename = "hdr/lonely_road_afternoon_puresky_4k.hdr";
+    //if (stbi_is_hdr(filename))
+    //{
+    //    stbi_set_flip_vertically_on_load(true);
+    //    hdrData = stbi_loadf(filename, &w, &h, &comp, 0);
+    //}
+    //
+    //if (hdrData != nullptr)
+    //{
+    //    stbi_image_free(hdrData);
+    //    hdrData = nullptr;
+    //}
+    //
+    //float texId;
+    //glGenTextures(1, &texId);
+    //glBindTexture(GL_TEXTURE_2D, texId);
+    //glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    //glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    //glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+    //glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    //glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     app->renderToBackBufferShader = LoadProgram(app, "RENDER_TO_BB.glsl", "RENDER_TO_BB");
     app->renderToFrameBufferShader = LoadProgram(app, "RENDER_TO_FB.glsl", "RENDER_TO_FB");
@@ -592,4 +679,10 @@ void App::UpdateEntityBuffer()
         ++iteration;
     }
     BufferManager::UnmapBuffer(localUniformBuffer);
+}
+
+unsigned int loadCubemap() {
+   
+
+    
 }

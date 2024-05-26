@@ -105,6 +105,15 @@ struct App
     vec3 cameraPosition = vec3(5.0, 5.0, 5.0);
     vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
     vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
+
+    Texture *texture = nullptr;
+    bool needsProcessing = false;
+
+    Texture *enviormentMap = nullptr;
+    Texture *irradianceMap = nullptr;
+
+
+
 };
 
 void Init(App* app);
