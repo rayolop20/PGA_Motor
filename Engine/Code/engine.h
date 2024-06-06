@@ -87,6 +87,7 @@ struct App
 
     // VAO object to link our screen filling quad with our textured quad shader
     GLuint vao;
+    GLuint vbo;
 
     std::string openglDebugInfo;
 
@@ -106,11 +107,13 @@ struct App
     vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
     vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
-    Texture *texture = nullptr;
-    bool needsProcessing = false;
-
-    Texture *enviormentMap = nullptr;
-    Texture *irradianceMap = nullptr;
+    void create_cube_map(const char* front, const char* back, const char* top, const char* bottom, const char* left, const char* right, GLuint* tex_cube);
+    bool load_cube_map_side(GLuint texture, GLenum side_target, const char* file_name);
+   // Texture *texture = nullptr;
+   // bool needsProcessing = false;
+   //
+   // Texture *enviormentMap = nullptr;
+   // Texture *irradianceMap = nullptr;
 
 
 
