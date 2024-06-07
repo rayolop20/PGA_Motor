@@ -312,10 +312,6 @@ void App::ConfigureFrameBuffer(FrameBuffer& aConfigFB)
 
 void Init(App* app)
 {
-
-
-
-
     //Get OPENGL info.
     app->openglDebugInfo += "OpeGL version:\n" + std::string(reinterpret_cast<const char*>(glGetString(GL_VERSION)));
 
@@ -363,11 +359,11 @@ void Init(App* app)
     std::vector<std::string> faces
     {
         "Skybox/StandardCubeMap.png",
-            "left.jpg",
-            "top.jpg",
-            "bottom.jpg",
-            "front.jpg",
-            "back.jpg"
+            "SkyboxTextures/negx.jpg",
+            "SkyboxTextures/negx.jpg",
+            "SkyboxTextures/negx.jpg",
+            "SkyboxTextures/negx.jpg",
+            "SkyboxTextures/negx.jpg"
     };
     unsigned int cubemapTexture = app->loadCubemap(faces);
 
@@ -378,6 +374,8 @@ void Init(App* app)
     app->renderToBackBufferShader = LoadProgram(app, "RENDER_TO_BB.glsl", "RENDER_TO_BB");
     app->renderToFrameBufferShader = LoadProgram(app, "RENDER_TO_FB.glsl", "RENDER_TO_FB");
     app->freamebufferToQuadShader = LoadProgram(app, "FB_TO_BB.glsl", "FB_TO_BB");
+    app->skyboxFragmentShader = LoadProgram(app, "SkyboxFragmentShader.glsl", "SFS");
+    app->skyboxVertexShader = LoadProgram(app, "SkyboxVertexShader.glsl", "SVS");
 
     //app->texturedMeshProgramIdx = LoadProgram(app, "base_model.glsl", "BASE_MODEL");
     const Program& texturedMeshProgram = app->programs[app->renderToFrameBufferShader];
@@ -402,21 +400,16 @@ void Init(App* app)
 
     app->localUniformBuffer = CreateConstantBuffer(app->maxUniformBufferSize);
 
-    //entities
-   // app->entities.push_back({ TransformPositionScale(vec3(0.f, 2.0f, 1.0), vec3(0.45f)),PatrickModelIndex,0,0 });   
-   // app->entities.push_back({ TransformPositionScale(vec3(2.f, 2.0f, 1.0), vec3(1.45f)),PenguinModelIndex,0,0 });
-   // app->entities.push_back({ TransformPositionScale(vec3(1.f, 2.0f, -2.0), vec3(1.45f)),PenguinModelIndex,0,0 });
-   // app->entities.push_back({ TransformPositionScale(vec3(3.f, 2.0f, -2.0), vec3(1.45f)),PenguinModelIndex,0,0 });
+ 
    app->entities.push_back({ TransformPositionScale(vec3(0.0, -3.0, 0.0), vec3(1.0, 1.0, 1.0)), GroundModelIndex, 0, 0 });
-   // app->entities.push_back({ TransformPositionScale(vec3(5.0, 2.0f, 0.0), vec3(0.05)), SkullModelIndex, 0, 0 });
-
+ 
     //lights
    
     app->lights.push_back({ LightType::LightType_Point,vec3(1.0,0.0,0.0),vec3(1.0,1.0,1.0),vec3(5.0,1.0,4.0) });
     app->lights.push_back({ LightType::LightType_Point,vec3(1.0,0.0,0.0),vec3(1.0,1.0,1.0),vec3(2.0,1.0,-5.0) });
     app->lights.push_back({ LightType::LightType_Point,vec3(1.0,1.0,0.0),vec3(1.0,1.0,1.0),vec3(4.0,0.0,6.0) });
     app->lights.push_back({ LightType::LightType_Point,vec3(0.0,0.0,1.0),vec3(1.0,1.0,1.0),vec3(-2.0,-1.0,3.0) });
-   // app->entities.push_back({ TransformPositionScale(vec3(5.0,1.0,4.0), vec3(0.3f)),SphereLModelIndex,0,0 });
+
     app->entities.push_back({ TransformPositionScale(vec3(4.0,0.0,6.0), vec3(0.3f)),SphereLModelIndex,0,0 });
     app->entities.push_back({ TransformPositionScale(vec3(2.0,1.0,-5.0), vec3(0.3f)),SphereLModelIndex,0,0 });
     app->entities.push_back({ TransformPositionScale(vec3(-2.0,-1.0,3.0), vec3(0.3f)),SphereLModelIndex,0,0 });
@@ -425,10 +418,10 @@ void Init(App* app)
 
    app->lights.push_back({ LightType::LightType_Directional,vec3(0.0,0.0,1.0),vec3(0.0,0.0,-1.0),vec3(0.0,2.0,-6.0) });
    app->lights.push_back({ LightType::LightType_Directional,vec3(1.0,1.0,1.0),vec3(0.0,-1.0,0),vec3(0.0f, -1.0f, -0.0) });
-   //app->lights.push_back({ LightType::LightType_Directional,vec3(1.0,1.0,1.0),vec3(1.0,-1.0,1.0),vec3(10.0,0.0,3.0) });
+ 
     app->entities.push_back({ TransformPositionScale(vec3(0.0,2.0,-6.0), vec3(0.3f)),QuadLModelIndex,0,0 });
     app->entities.push_back({ TransformPositionScale(vec3(0.0f, -1.0f, -0.0), vec3(0.3f)),QuadLModelIndex,0,0 });
-   // app->entities.push_back({ TransformPositionScale(vec3(3.0,0.0,3.0), vec3(0.45f)),QuadLModelIndex,0,0 });
+
 
     app->ConfigureFrameBuffer(app->defferredFrameBuffer);
 

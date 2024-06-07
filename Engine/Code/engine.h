@@ -62,6 +62,10 @@ struct App
     GLuint renderToBackBufferShader;
     GLuint renderToFrameBufferShader;
     GLuint freamebufferToQuadShader;
+    
+    GLuint skyboxFragmentShader;
+    GLuint skyboxVertexShader;
+
 
     // program indices
     u32 texturedGeometryProgramIdx = 0;
