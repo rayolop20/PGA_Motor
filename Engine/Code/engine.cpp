@@ -13,84 +13,50 @@
 #include "Globals.h"
 
 
-float points[] = {
-  -10.0f,  10.0f, -10.0f,
-  -10.0f, -10.0f, -10.0f,
-   10.0f, -10.0f, -10.0f,
-   10.0f, -10.0f, -10.0f,
-   10.0f,  10.0f, -10.0f,
-  -10.0f,  10.0f, -10.0f,
+float skyboxVertices[] = {
+    // positions          
+    -1.0f,  1.0f, -1.0f,
+    -1.0f, -1.0f, -1.0f,
+     1.0f, -1.0f, -1.0f,
+     1.0f, -1.0f, -1.0f,
+     1.0f,  1.0f, -1.0f,
+    -1.0f,  1.0f, -1.0f,
 
-  -10.0f, -10.0f,  10.0f,
-  -10.0f, -10.0f, -10.0f,
-  -10.0f,  10.0f, -10.0f,
-  -10.0f,  10.0f, -10.0f,
-  -10.0f,  10.0f,  10.0f,
-  -10.0f, -10.0f,  10.0f,
+    -1.0f, -1.0f,  1.0f,
+    -1.0f, -1.0f, -1.0f,
+    -1.0f,  1.0f, -1.0f,
+    -1.0f,  1.0f, -1.0f,
+    -1.0f,  1.0f,  1.0f,
+    -1.0f, -1.0f,  1.0f,
 
-   10.0f, -10.0f, -10.0f,
-   10.0f, -10.0f,  10.0f,
-   10.0f,  10.0f,  10.0f,
-   10.0f,  10.0f,  10.0f,
-   10.0f,  10.0f, -10.0f,
-   10.0f, -10.0f, -10.0f,
+     1.0f, -1.0f, -1.0f,
+     1.0f, -1.0f,  1.0f,
+     1.0f,  1.0f,  1.0f,
+     1.0f,  1.0f,  1.0f,
+     1.0f,  1.0f, -1.0f,
+     1.0f, -1.0f, -1.0f,
 
-  -10.0f, -10.0f,  10.0f,
-  -10.0f,  10.0f,  10.0f,
-   10.0f,  10.0f,  10.0f,
-   10.0f,  10.0f,  10.0f,
-   10.0f, -10.0f,  10.0f,
-  -10.0f, -10.0f,  10.0f,
+    -1.0f, -1.0f,  1.0f,
+    -1.0f,  1.0f,  1.0f,
+     1.0f,  1.0f,  1.0f,
+     1.0f,  1.0f,  1.0f,
+     1.0f, -1.0f,  1.0f,
+    -1.0f, -1.0f,  1.0f,
 
-  -10.0f,  10.0f, -10.0f,
-   10.0f,  10.0f, -10.0f,
-   10.0f,  10.0f,  10.0f,
-   10.0f,  10.0f,  10.0f,
-  -10.0f,  10.0f,  10.0f,
-  -10.0f,  10.0f, -10.0f,
+    -1.0f,  1.0f, -1.0f,
+     1.0f,  1.0f, -1.0f,
+     1.0f,  1.0f,  1.0f,
+     1.0f,  1.0f,  1.0f,
+    -1.0f,  1.0f,  1.0f,
+    -1.0f,  1.0f, -1.0f,
 
-  -10.0f, -10.0f, -10.0f,
-  -10.0f, -10.0f,  10.0f,
-   10.0f, -10.0f, -10.0f,
-   10.0f, -10.0f, -10.0f,
-  -10.0f, -10.0f,  10.0f,
-   10.0f, -10.0f,  10.0f
+    -1.0f, -1.0f, -1.0f,
+    -1.0f, -1.0f,  1.0f,
+     1.0f, -1.0f, -1.0f,
+     1.0f, -1.0f, -1.0f,
+    -1.0f, -1.0f,  1.0f,
+     1.0f, -1.0f,  1.0f
 };
-
-//float skyboxVertices[] = {
-//    -1.0f,  -1.0f, 1.0f,
-//     1.0f,  -1.0f, 1.0f,
-//     1.0f, -1.0f, -1.0f,
-//    -1.0f, -1.0f, -1.0f,
-//
-//     -1.0f, 1.0f, 1.0f,
-//     1.0f,  1.0f, 1.0f,
-//     1.0f,  1.0f, -1.0f,
-//    -1.0f,  1.0f, -1.0f,
-//};
-//
-//
-//unsigned int skyboxIndices[] = {
-//    1,2,6,
-//    6,5,1,
-//    
-//    0,4,7,
-//    7,3,0,
-//    
-//    4,5,6,
-//    6,7,4,
-//    
-//    0,3,2,
-//    2,1,2,
-//
-//    0,1,5,
-//    5,4,0,
-//
-//    3,7,6,
-//    6,2,3,
-//
-//
-//};
 
 GLuint CreateProgramFromSource(String programSource, const char* shaderName)
 {
@@ -363,16 +329,9 @@ void Init(App* app)
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-    glGenBuffers(1, &app->vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, app->vbo);
-
-    glBufferData(GL_ARRAY_BUFFER, 3 * 36 * sizeof(float), &points, GL_STATIC_DRAW);
-
     glGenVertexArrays(1, &app->vao);
     glBindVertexArray(app->vao);
     glBindBuffer(GL_ARRAY_BUFFER, app->embeddedVertices);
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(VertexV3V2), (void*)0);
     glEnableVertexAttribArray(0);
@@ -383,85 +342,37 @@ void Init(App* app)
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //unsigned char* facePixels[6];
-    //unsigned int textureID;
-    //glGenTextures(1, &textureID);
-    //glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
-    //
-    //std::vector<std::string> textures_faces = {
-    //"SkyboxTextures/negx.jpg",
-    //"SkyboxTextures/negy.jpg",
-    //"SkyboxTextures/negz.jpg",
-    //"SkyboxTextures/posx.jpg",
-    //"SkyboxTextures/posy.jpg",
-    //"SkyboxTextures/posz.jpg"
-    //
-    // 
-    //};
-    GLuint tex_cube;
-    app->create_cube_map("SkyboxTextures/posz.jpg", "SkyboxTextures/negz.jpg", "SkyboxTextures/posy.jpg", "SkyboxTextures/negy.jpg", "SkyboxTextures/negx.jpg", "SkyboxTextures/posx.jpg", &tex_cube);
-   
-    
-    //int width, height, nrChannels;
-    //unsigned char* data;
-    //for (unsigned int i = 0; i < textures_faces.size(); i++)
-    //{
-    //    data = stbi_load(textures_faces[i].c_str(), &width, &height, &nrChannels, 0);
-    //    glTexImage2D(
-    //        GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
-    //        0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data
-    //    );
-    //}
-    // format cube map texture
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 
-    //
-    //int width, height, nrChannels;
-    //unsigned char* data;
-    //for (unsigned int i = 0; i < 6; i++)
-    //{
-    //
-    //    glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, facePixels[i]);
-    //}
-    //
-    //glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    //glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    //glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-    //glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    //glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    GLuint vbo;
+    glGenBuffers(1, &vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBufferData(GL_ARRAY_BUFFER, 3 * 36 * sizeof(float), &skyboxVertices, GL_STATIC_DRAW);
 
-    //
-    //int w = 0;
-    //int h = 0;
-    //int comp = 0;
-    //float* hdrData = nullptr;
-    //const char* filename = "hdr/lonely_road_afternoon_puresky_4k.hdr";
-    //if (stbi_is_hdr(filename))
-    //{
-    //    stbi_set_flip_vertically_on_load(true);
-    //    hdrData = stbi_loadf(filename, &w, &h, &comp, 0);
-    //}
-    //
-    //if (hdrData != nullptr)
-    //{
-    //    stbi_image_free(hdrData);
-    //    hdrData = nullptr;
-    //}
-    //
-    //float texId;
-    //glGenTextures(1, &texId);
-    //glBindTexture(GL_TEXTURE_2D, texId);
-    //glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    //glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    //glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-    //glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    //glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    GLuint vao;
+    glGenVertexArrays(1, &vao);
+    glBindVertexArray(vao);
+    glEnableVertexAttribArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
 
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+ 
+    //----------------------------------------------------------------------------------------------------------------------------------------------------------
+    std::vector<std::string> faces
+    {
+        "Skybox/StandardCubeMap.png",
+            "left.jpg",
+            "top.jpg",
+            "bottom.jpg",
+            "front.jpg",
+            "back.jpg"
+    };
+    unsigned int cubemapTexture = app->loadCubemap(faces);
+
+
+ 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     app->renderToBackBufferShader = LoadProgram(app, "RENDER_TO_BB.glsl", "RENDER_TO_BB");
@@ -769,57 +680,35 @@ void App::UpdateEntityBuffer()
 
 }
 
-void App::create_cube_map(const char* front, const char* back, const char* top, const char* bottom, const char* left, const char* right, GLuint* tex_cube)
-{
-    // generate a cube-map texture to hold all the sides
-    glActiveTexture(GL_TEXTURE0);
-    glGenTextures(1, tex_cube);
 
-    // load each image and copy into a side of the cube-map texture
-    load_cube_map_side(*tex_cube, GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, front);
-    load_cube_map_side(*tex_cube, GL_TEXTURE_CUBE_MAP_POSITIVE_Z, back);
-    load_cube_map_side(*tex_cube, GL_TEXTURE_CUBE_MAP_POSITIVE_Y, top);
-    load_cube_map_side(*tex_cube, GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, bottom);
-    load_cube_map_side(*tex_cube, GL_TEXTURE_CUBE_MAP_NEGATIVE_X, left);
-    load_cube_map_side(*tex_cube, GL_TEXTURE_CUBE_MAP_POSITIVE_X, right);
-    // format cube map texture
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+unsigned int App::loadCubemap(std::vector<std::string> faces)
+{
+    unsigned int textureID;
+    glGenTextures(1, &textureID);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
+
+    int width, height, nrChannels;
+    for (unsigned int i = 0; i < faces.size(); i++)
+    {
+        unsigned char* data = stbi_load(faces[i].c_str(), &width, &height, &nrChannels, 0);
+        if (data)
+        {
+            glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
+                0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data
+            );
+            stbi_image_free(data);
+        }
+        else
+        {
+            //  cout << "Cubemap tex failed to load at path: " << faces[i] << std::endl;
+            stbi_image_free(data);
+        }
+    }
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-}
-
-bool load_cube_map_side(GLuint texture, GLenum side_target, const char* file_name)
-{
-    glBindTexture(GL_TEXTURE_CUBE_MAP, texture);
-
-    int x, y, n;
-    int force_channels = 4;
-    unsigned char* image_data = stbi_load(
-        file_name, &x, &y, &n, force_channels);
-    if (!image_data) {
-        fprintf(stderr, "ERROR: could not load %s\n", file_name);
-        return false;
-    }
-    // non-power-of-2 dimensions check
-    if ((x & (x - 1)) != 0 || (y & (y - 1)) != 0) {
-        fprintf(stderr,
-            "WARNING: image %s is not power-of-2 dimensions\n",
-            file_name);
-    }
-
-    // copy image data into 'target' side of cube map
-    glTexImage2D(
-        side_target,
-        0,
-        GL_RGBA,
-        x,
-        y,
-        0,
-        GL_RGBA,
-        GL_UNSIGNED_BYTE,
-        image_data);
-    free(image_data);
-    return true;
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+    glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
+    return textureID;
 }

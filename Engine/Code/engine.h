@@ -33,6 +33,9 @@ struct App
 
     const GLuint CreateTexture(const bool isFloatingPoint = false);
 
+    unsigned int loadCubemap(std::vector<std::string> faces);
+
+
     // Loop
     f32  deltaTime;
     bool isRunning;
@@ -107,8 +110,7 @@ struct App
     vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
     vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
-    void create_cube_map(const char* front, const char* back, const char* top, const char* bottom, const char* left, const char* right, GLuint* tex_cube);
-    bool load_cube_map_side(GLuint texture, GLenum side_target, const char* file_name);
+  
    // Texture *texture = nullptr;
    // bool needsProcessing = false;
    //
@@ -118,7 +120,17 @@ struct App
 
 
 };
+// ---------------------------------------------------------------------------------------
+struct EnviroMement {
+    Texture* texture = nullptr;
 
+    bool needsProcessing = false;
+
+    // TextureCube* enviromentMap;
+    // TextureCube* irradianceMap;
+
+};
+// ---------------------------------------------------------------------------------------
 void Init(App* app);
 
 void Gui(App* app);
