@@ -33,7 +33,7 @@ struct App
 
     const GLuint CreateTexture(const bool isFloatingPoint = false);
     // ---------------------------------------------------------------------------------------
-    unsigned int loadCubemap(std::vector<std::string> faces);
+    unsigned int loadCubemapTextures(std::vector<std::string> faces);
     float* loadhdr(const char* filename);
 
     float* hdrData;
@@ -86,7 +86,7 @@ struct App
     
     
 
-    unsigned int cubemapTexture;
+    GLuint cubemapTexture;
 
     // texture indices
     u32 diceTexIdx;
@@ -130,8 +130,8 @@ struct App
     vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
     vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
-    glm::mat4x4 projection;
-    glm::mat4x4 view;
+    glm::mat4x4 projectionMatrix;
+    glm::mat4x4 viewMatrix;
    // Texture *texture = nullptr;
    // bool needsProcessing = false;
    //

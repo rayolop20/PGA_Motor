@@ -16,47 +16,47 @@
 
 float skyboxVertices[] = {
     // positions          
-  -10.0f,  10.0f, -10.0f,
-  -10.0f, -10.0f, -10.0f,
-   10.0f, -10.0f, -10.0f,
-   10.0f, -10.0f, -10.0f,
-   10.0f,  10.0f, -10.0f,
-  -10.0f,  10.0f, -10.0f,
-
-  -10.0f, -10.0f,  10.0f,
-  -10.0f, -10.0f, -10.0f,
-  -10.0f,  10.0f, -10.0f,
-  -10.0f,  10.0f, -10.0f,
-  -10.0f,  10.0f,  10.0f,
-  -10.0f, -10.0f,  10.0f,
-
-   10.0f, -10.0f, -10.0f,
-   10.0f, -10.0f,  10.0f,
-   10.0f,  10.0f,  10.0f,
-   10.0f,  10.0f,  10.0f,
-   10.0f,  10.0f, -10.0f,
-   10.0f, -10.0f, -10.0f,
-
-  -10.0f, -10.0f,  10.0f,
-  -10.0f,  10.0f,  10.0f,
-   10.0f,  10.0f,  10.0f,
-   10.0f,  10.0f,  10.0f,
-   10.0f, -10.0f,  10.0f,
-  -10.0f, -10.0f,  10.0f,
-
-  -10.0f,  10.0f, -10.0f,
-   10.0f,  10.0f, -10.0f,
-   10.0f,  10.0f,  10.0f,
-   10.0f,  10.0f,  10.0f,
-  -10.0f,  10.0f,  10.0f,
-  -10.0f,  10.0f, -10.0f,
-
-  -10.0f, -10.0f, -10.0f,
-  -10.0f, -10.0f,  10.0f,
-   10.0f, -10.0f, -10.0f,
-   10.0f, -10.0f, -10.0f,
-  -10.0f, -10.0f,  10.0f,
-   10.0f, -10.0f,  10.0f
+  -90.0f,  90.0f, -90.0f,
+  -90.0f, -90.0f, -90.0f,
+   90.0f, -90.0f, -90.0f,
+   90.0f, -90.0f, -90.0f,
+   90.0f,  90.0f, -90.0f,
+  -90.0f,  90.0f, -90.0f,
+                   
+  -90.0f, -90.0f,  90.0f,
+  -90.0f, -90.0f, -90.0f,
+  -90.0f,  90.0f, -90.0f,
+  -90.0f,  90.0f, -90.0f,
+  -90.0f,  90.0f,  90.0f,
+  -90.0f, -90.0f,  90.0f,
+                   
+   90.0f, -90.0f, -90.0f,
+   90.0f, -90.0f,  90.0f,
+   90.0f,  90.0f,  90.0f,
+   90.0f,  90.0f,  90.0f,
+   90.0f,  90.0f, -90.0f,
+   90.0f, -90.0f, -90.0f,
+                   
+  -90.0f, -90.0f,  90.0f,
+  -90.0f,  90.0f,  90.0f,
+   90.0f,  90.0f,  90.0f,
+   90.0f,  90.0f,  90.0f,
+   90.0f, -90.0f,  90.0f,
+  -90.0f, -90.0f,  90.0f,
+                   
+  -90.0f,  90.0f, -90.0f,
+   90.0f,  90.0f, -90.0f,
+   90.0f,  90.0f,  90.0f,
+   90.0f,  90.0f,  90.0f,
+  -90.0f,  90.0f,  90.0f,
+  -90.0f,  90.0f, -90.0f,
+                   
+  -90.0f, -90.0f, -90.0f,
+  -90.0f, -90.0f,  90.0f,
+   90.0f, -90.0f, -90.0f,
+   90.0f, -90.0f, -90.0f,
+  -90.0f, -90.0f,  90.0f,
+   90.0f, -90.0f,  90.0f
 };
 
 GLuint CreateProgramFromSource(String programSource, const char* shaderName)
@@ -360,7 +360,8 @@ void Init(App* app)
  
     //----------------------------------------------------------------------------------------------------------------------------------------------------------
    
-     app->cubemapTexture = app->loadCubemap(app->faces);
+
+    app->cubemapTexture = app->loadCubemapTextures(app->faces);
 
 
  
@@ -402,19 +403,17 @@ void Init(App* app)
  
     //lights
    
+   
     app->lights.push_back({ LightType::LightType_Point,vec3(1.0,0.0,0.0),vec3(1.0,1.0,1.0),vec3(5.0,1.0,4.0) });
-    app->lights.push_back({ LightType::LightType_Point,vec3(1.0,0.0,0.0),vec3(1.0,1.0,1.0),vec3(2.0,1.0,-5.0) });
-    app->lights.push_back({ LightType::LightType_Point,vec3(1.0,1.0,0.0),vec3(1.0,1.0,1.0),vec3(4.0,0.0,6.0) });
-    app->lights.push_back({ LightType::LightType_Point,vec3(0.0,0.0,1.0),vec3(1.0,1.0,1.0),vec3(-2.0,-1.0,3.0) });
-
-    app->entities.push_back({ TransformPositionScale(vec3(4.0,0.0,6.0), vec3(0.3f)),SphereLModelIndex,0,0 });
-    app->entities.push_back({ TransformPositionScale(vec3(2.0,1.0,-5.0), vec3(0.3f)),SphereLModelIndex,0,0 });
-    app->entities.push_back({ TransformPositionScale(vec3(-2.0,-1.0,3.0), vec3(0.3f)),SphereLModelIndex,0,0 });
+   //app->lights.push_back({ LightType::LightType_Point,vec3(1.0,0.0,0.0),vec3(1.0,1.0,1.0),vec3(2.0,1.0,-5.0) });
+   //app->lights.push_back({ LightType::LightType_Point,vec3(1.0,1.0,0.0),vec3(1.0,1.0,1.0),vec3(4.0,0.0,6.0) });
+   //app->lights.push_back({ LightType::LightType_Point,vec3(0.0,0.0,1.0),vec3(1.0,1.0,1.0),vec3(-2.0,-1.0,3.0) });
 
 
 
-   app->lights.push_back({ LightType::LightType_Directional,vec3(0.0,0.0,1.0),vec3(0.0,0.0,-1.0),vec3(0.0,2.0,-6.0) });
-   app->lights.push_back({ LightType::LightType_Directional,vec3(1.0,1.0,1.0),vec3(0.0,-1.0,0),vec3(0.0f, -1.0f, -0.0) });
+
+   //app->lights.push_back({ LightType::LightType_Directional,vec3(0.0,0.0,1.0),vec3(0.0,0.0,-1.0),vec3(0.0,2.0,-6.0) });
+  // app->lights.push_back({ LightType::LightType_Directional,vec3(1.0,1.0,1.0),vec3(0.0,-1.0,0),vec3(0.0f, -1.0f, -0.0) });
  
     app->entities.push_back({ TransformPositionScale(vec3(0.0,2.0,-6.0), vec3(0.3f)),QuadLModelIndex,0,0 });
     app->entities.push_back({ TransformPositionScale(vec3(0.0f, -1.0f, -0.0), vec3(0.3f)),QuadLModelIndex,0,0 });
@@ -521,6 +520,22 @@ void Render(App* app)
         const Program& texturedMeshProgram = app->programs[app->renderToFrameBufferShader];
         glUseProgram(texturedMeshProgram.handle);
         app->RenderGeometry(texturedMeshProgram);
+
+
+        const Program& SFStoVS = app->programs[app->skyboxFragmentShaderToVertexShader];
+        glUseProgram(SFStoVS.handle);
+
+        GLint projectionLoc = glGetUniformLocation(SFStoVS.handle, "projection");
+        GLint viewLoc = glGetUniformLocation(SFStoVS.handle, "view");
+
+        glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(app->projectionMatrix));
+        glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(app->viewMatrix));
+
+        glBindVertexArray(app->vaoSkybox);
+        glBindTexture(GL_TEXTURE_CUBE_MAP, app->cubemapTexture);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        glDepthMask(GL_TRUE);
+
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
         //Render to BB ColorAtt
@@ -532,37 +547,15 @@ void Render(App* app)
         glUseProgram(FBtoBB.handle);
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        //Render to SkyFragmentShader ColorAtt
-        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glViewport(0, 0, app->displaySize.x, app->displaySize.y);
 
-        //glDepthMask(GL_FALSE);
-        //glUseProgram(shader_programme);
-        //glActiveTexture(GL_TEXTURE0);
-        //glBindTexture(GL_TEXTURE_CUBE_MAP, tex_cube);
-        //glBindVertexArray(vao);
-        //glDrawArrays(GL_TRIANGLES, 0, 36);
-        //glDepthMask(GL_TRUE);
+      // glDepthMask(GL_FALSE);
+      //
+      // glActiveTexture(GL_TEXTURE0);
+      // glBindTexture(GL_TEXTURE_CUBE_MAP, app->cubemapTexture);
+      // glBindVertexArray(app->vaoSkybox);
+      // glDrawArrays(GL_TRIANGLES, 0, 36);
+      // glDepthMask(GL_TRUE);
 
-      
-       const Program& SFStoVS = app->programs[app->skyboxFragmentShaderToVertexShader];
-       glUseProgram(SFStoVS.handle);
-
-       GLint projectionLoc = glGetUniformLocation(SFStoVS.handle, "projection");
-       GLint viewLoc = glGetUniformLocation(SFStoVS.handle, "view");
-       
-       glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(app->projection));
-       glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(app->view));
-
-       glDepthMask(GL_FALSE);
-       glBindVertexArray(app->vaoSkybox);
-       glBindTexture(GL_TEXTURE_CUBE_MAP, app->cubemapTexture);
-       glDrawArrays(GL_TRIANGLES, 0, 36);
-       glDepthMask(GL_TRUE);
-
-        
-        app->RenderGeometry(SFStoVS);
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //Render Quad
         glBindBufferRange(GL_UNIFORM_BUFFER, BINDING(0), app->localUniformBuffer.handle, app->globalParamsOffset, app->globalParamsSize);
@@ -654,7 +647,7 @@ void App::UpdateEntityBuffer()
     float aspectRatio = (float)displaySize.x / (float)displaySize.y;
     float znear = 0.1f;
     float zfar = 1000.0f;
-    glm::mat4 projection = glm::perspective(glm::radians(60.0f), aspectRatio, znear, zfar);
+    projectionMatrix = glm::perspective(glm::radians(60.0f), aspectRatio, znear, zfar);
 
 
 
@@ -662,13 +655,8 @@ void App::UpdateEntityBuffer()
     vec3 xCam = glm::cross(zCam, vec3(0, 1, 0));
     vec3 yCam = glm::cross(xCam, zCam);
 
-    //glm::mat4 view = glm::lookAt(cameraPosition, target, yCam);
 
-   
-
-
-    glm::mat4 view;
-    view = lookAt(cameraPosition, cameraPosition + cameraFront, cameraUp);
+    viewMatrix = lookAt(cameraPosition, cameraPosition + cameraFront, cameraUp);
 
     BufferManager::MapBuffer(localUniformBuffer, GL_WRITE_ONLY);
 
@@ -692,7 +680,7 @@ void App::UpdateEntityBuffer()
     for (auto it = entities.begin(); it != entities.end(); ++it)
     {
         glm::mat4 world = it->worldMatrix;
-        glm::mat4 WVP = projection * view * world;
+        glm::mat4 WVP = projectionMatrix * viewMatrix * world;
 
         Buffer& localBuffer = localUniformBuffer;
         BufferManager::AlignHead(localBuffer, uniformBlockAligment);
@@ -708,7 +696,7 @@ void App::UpdateEntityBuffer()
 }
 
 
-unsigned int App::loadCubemap(std::vector<std::string> faces)
+unsigned int App::loadCubemapTextures(std::vector<std::string> faces)
 {
     unsigned int textureID;
     glGenTextures(1, &textureID);
