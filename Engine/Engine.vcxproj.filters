@@ -124,8 +124,5 @@
     <None Include="WorkingDir\SkyboxFragmentShader.glsl">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="WorkingDir\SkyboxVertexShader.glsl">
-      <Filter>Shaders</Filter>
-    </None>
   </ItemGroup>
 </Project>

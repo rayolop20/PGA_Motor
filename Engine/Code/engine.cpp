@@ -13,49 +13,50 @@
 #include "Globals.h"
 
 
+
 float skyboxVertices[] = {
     // positions          
-    -1.0f,  1.0f, -1.0f,
-    -1.0f, -1.0f, -1.0f,
-     1.0f, -1.0f, -1.0f,
-     1.0f, -1.0f, -1.0f,
-     1.0f,  1.0f, -1.0f,
-    -1.0f,  1.0f, -1.0f,
+  -10.0f,  10.0f, -10.0f,
+  -10.0f, -10.0f, -10.0f,
+   10.0f, -10.0f, -10.0f,
+   10.0f, -10.0f, -10.0f,
+   10.0f,  10.0f, -10.0f,
+  -10.0f,  10.0f, -10.0f,
 
-    -1.0f, -1.0f,  1.0f,
-    -1.0f, -1.0f, -1.0f,
-    -1.0f,  1.0f, -1.0f,
-    -1.0f,  1.0f, -1.0f,
-    -1.0f,  1.0f,  1.0f,
-    -1.0f, -1.0f,  1.0f,
+  -10.0f, -10.0f,  10.0f,
+  -10.0f, -10.0f, -10.0f,
+  -10.0f,  10.0f, -10.0f,
+  -10.0f,  10.0f, -10.0f,
+  -10.0f,  10.0f,  10.0f,
+  -10.0f, -10.0f,  10.0f,
 
-     1.0f, -1.0f, -1.0f,
-     1.0f, -1.0f,  1.0f,
-     1.0f,  1.0f,  1.0f,
-     1.0f,  1.0f,  1.0f,
-     1.0f,  1.0f, -1.0f,
-     1.0f, -1.0f, -1.0f,
+   10.0f, -10.0f, -10.0f,
+   10.0f, -10.0f,  10.0f,
+   10.0f,  10.0f,  10.0f,
+   10.0f,  10.0f,  10.0f,
+   10.0f,  10.0f, -10.0f,
+   10.0f, -10.0f, -10.0f,
 
-    -1.0f, -1.0f,  1.0f,
-    -1.0f,  1.0f,  1.0f,
-     1.0f,  1.0f,  1.0f,
-     1.0f,  1.0f,  1.0f,
-     1.0f, -1.0f,  1.0f,
-    -1.0f, -1.0f,  1.0f,
+  -10.0f, -10.0f,  10.0f,
+  -10.0f,  10.0f,  10.0f,
+   10.0f,  10.0f,  10.0f,
+   10.0f,  10.0f,  10.0f,
+   10.0f, -10.0f,  10.0f,
+  -10.0f, -10.0f,  10.0f,
 
-    -1.0f,  1.0f, -1.0f,
-     1.0f,  1.0f, -1.0f,
-     1.0f,  1.0f,  1.0f,
-     1.0f,  1.0f,  1.0f,
-    -1.0f,  1.0f,  1.0f,
-    -1.0f,  1.0f, -1.0f,
+  -10.0f,  10.0f, -10.0f,
+   10.0f,  10.0f, -10.0f,
+   10.0f,  10.0f,  10.0f,
+   10.0f,  10.0f,  10.0f,
+  -10.0f,  10.0f,  10.0f,
+  -10.0f,  10.0f, -10.0f,
 
-    -1.0f, -1.0f, -1.0f,
-    -1.0f, -1.0f,  1.0f,
-     1.0f, -1.0f, -1.0f,
-     1.0f, -1.0f, -1.0f,
-    -1.0f, -1.0f,  1.0f,
-     1.0f, -1.0f,  1.0f
+  -10.0f, -10.0f, -10.0f,
+  -10.0f, -10.0f,  10.0f,
+   10.0f, -10.0f, -10.0f,
+   10.0f, -10.0f, -10.0f,
+  -10.0f, -10.0f,  10.0f,
+   10.0f, -10.0f,  10.0f
 };
 
 GLuint CreateProgramFromSource(String programSource, const char* shaderName)
@@ -339,16 +340,18 @@ void Init(App* app)
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    GLuint vbo;
-    glGenBuffers(1, &vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    //vbo
+
+    glGenBuffers(1, &app->vboSkybox);
+    glBindBuffer(GL_ARRAY_BUFFER, app->vboSkybox);
     glBufferData(GL_ARRAY_BUFFER, 3 * 36 * sizeof(float), &skyboxVertices, GL_STATIC_DRAW);
 
-    GLuint vao;
-    glGenVertexArrays(1, &vao);
-    glBindVertexArray(vao);
+    //vao
+  
+    glGenVertexArrays(1, &app->vaoSkybox);
+    glBindVertexArray(app->vaoSkybox);
     glEnableVertexAttribArray(0);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, app->vboSkybox);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
 
 
@@ -356,16 +359,8 @@ void Init(App* app)
 
  
     //----------------------------------------------------------------------------------------------------------------------------------------------------------
-    std::vector<std::string> faces
-    {
-        "Skybox/StandardCubeMap.png",
-            "SkyboxTextures/negx.jpg",
-            "SkyboxTextures/negx.jpg",
-            "SkyboxTextures/negx.jpg",
-            "SkyboxTextures/negx.jpg",
-            "SkyboxTextures/negx.jpg"
-    };
-    unsigned int cubemapTexture = app->loadCubemap(faces);
+   
+     app->cubemapTexture = app->loadCubemap(app->faces);
 
 
  
@@ -374,8 +369,10 @@ void Init(App* app)
     app->renderToBackBufferShader = LoadProgram(app, "RENDER_TO_BB.glsl", "RENDER_TO_BB");
     app->renderToFrameBufferShader = LoadProgram(app, "RENDER_TO_FB.glsl", "RENDER_TO_FB");
     app->freamebufferToQuadShader = LoadProgram(app, "FB_TO_BB.glsl", "FB_TO_BB");
-    app->skyboxFragmentShader = LoadProgram(app, "SkyboxFragmentShader.glsl", "SFS");
-    app->skyboxVertexShader = LoadProgram(app, "SkyboxVertexShader.glsl", "SVS");
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    app->skyboxFragmentShaderToVertexShader = LoadProgram(app, "SkyboxFragmentShader.glsl", "SFS");
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
     //app->texturedMeshProgramIdx = LoadProgram(app, "base_model.glsl", "BASE_MODEL");
     const Program& texturedMeshProgram = app->programs[app->renderToFrameBufferShader];
@@ -496,6 +493,10 @@ void Render(App* app)
         glUseProgram(texturedMeshProgram.handle);
 
         app->RenderGeometry(texturedMeshProgram);
+        
+
+
+    
     }
     break;
 
@@ -529,7 +530,40 @@ void Render(App* app)
 
         const Program& FBtoBB = app->programs[app->freamebufferToQuadShader];
         glUseProgram(FBtoBB.handle);
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+        //Render to SkyFragmentShader ColorAtt
+        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glViewport(0, 0, app->displaySize.x, app->displaySize.y);
+
+        //glDepthMask(GL_FALSE);
+        //glUseProgram(shader_programme);
+        //glActiveTexture(GL_TEXTURE0);
+        //glBindTexture(GL_TEXTURE_CUBE_MAP, tex_cube);
+        //glBindVertexArray(vao);
+        //glDrawArrays(GL_TRIANGLES, 0, 36);
+        //glDepthMask(GL_TRUE);
+
+      
+       const Program& SFStoVS = app->programs[app->skyboxFragmentShaderToVertexShader];
+       glUseProgram(SFStoVS.handle);
+
+       GLint projectionLoc = glGetUniformLocation(SFStoVS.handle, "projection");
+       GLint viewLoc = glGetUniformLocation(SFStoVS.handle, "view");
+       
+       glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(app->projection));
+       glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(app->view));
+
+       glDepthMask(GL_FALSE);
+       glBindVertexArray(app->vaoSkybox);
+       glBindTexture(GL_TEXTURE_CUBE_MAP, app->cubemapTexture);
+       glDrawArrays(GL_TRIANGLES, 0, 36);
+       glDepthMask(GL_TRUE);
+
+        
+        app->RenderGeometry(SFStoVS);
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //Render Quad
         glBindBufferRange(GL_UNIFORM_BUFFER, BINDING(0), app->localUniformBuffer.handle, app->globalParamsOffset, app->globalParamsSize);
 
@@ -704,4 +738,26 @@ unsigned int App::loadCubemap(std::vector<std::string> faces)
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
     glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
     return textureID;
+}
+
+float* App::loadhdr(const char* filename)
+{
+ 
+    int width = 0, height = 0, comp = 0;
+    if (stbi_is_hdr(filename))
+    {
+        stbi_set_flip_vertically_on_load(true);
+        hdrData = stbi_loadf(filename, &width, &height, &comp, 0);
+    }
+
+    unsigned int texId;
+    glGenTextures(1, &texId);
+    glBindTexture(GL_TEXTURE_2D, texId);
+    glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB16F,width,height,0,GL_RGB,GL_FLOAT,hdrData);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_LINEAR);
+    glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
+    return hdrData;
 }

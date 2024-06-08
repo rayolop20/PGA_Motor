@@ -57,7 +57,6 @@
     <None Include="WorkingDir\RENDER_TO_FB.glsl" />
     <None Include="WorkingDir\shaders.glsl" />
     <None Include="WorkingDir\SkyboxFragmentShader.glsl" />
-    <None Include="WorkingDir\SkyboxVertexShader.glsl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

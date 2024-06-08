@@ -32,10 +32,12 @@ struct App
     void RenderGeometry(const Program& texturedMeshProgram);
 
     const GLuint CreateTexture(const bool isFloatingPoint = false);
-
+    // ---------------------------------------------------------------------------------------
     unsigned int loadCubemap(std::vector<std::string> faces);
+    float* loadhdr(const char* filename);
 
-
+    float* hdrData;
+    // ---------------------------------------------------------------------------------------
     // Loop
     f32  deltaTime;
     bool isRunning;
@@ -63,9 +65,17 @@ struct App
     GLuint renderToFrameBufferShader;
     GLuint freamebufferToQuadShader;
     
-    GLuint skyboxFragmentShader;
-    GLuint skyboxVertexShader;
-
+    GLuint skyboxFragmentShaderToVertexShader;
+    
+    std::vector<std::string> faces
+    {
+            "SkyboxTextures/negx.jpg",
+            "SkyboxTextures/negx.jpg",
+            "SkyboxTextures/negx.jpg",
+            "SkyboxTextures/negx.jpg",
+            "SkyboxTextures/negx.jpg",
+            "SkyboxTextures/negx.jpg"
+    };
 
     // program indices
     u32 texturedGeometryProgramIdx = 0;
@@ -74,6 +84,10 @@ struct App
     u32 patricioModel = 0;
     GLuint texturedMeshProgram_uTexture;
     
+    
+
+    unsigned int cubemapTexture;
+
     // texture indices
     u32 diceTexIdx;
     u32 whiteTexIdx;
@@ -95,6 +109,8 @@ struct App
     // VAO object to link our screen filling quad with our textured quad shader
     GLuint vao;
     GLuint vbo;
+    GLuint vaoSkybox;
+    GLuint vboSkybox;
 
     std::string openglDebugInfo;
 
@@ -114,7 +130,8 @@ struct App
     vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
     vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
-  
+    glm::mat4x4 projection;
+    glm::mat4x4 view;
    // Texture *texture = nullptr;
    // bool needsProcessing = false;
    //
