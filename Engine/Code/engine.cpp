@@ -399,25 +399,18 @@ void Init(App* app)
     app->localUniformBuffer = CreateConstantBuffer(app->maxUniformBufferSize);
 
  
-   app->entities.push_back({ TransformPositionScale(vec3(0.0, -3.0, 0.0), vec3(1.0, 1.0, 1.0)), GroundModelIndex, 0, 0 });
+  // app->entities.push_back({ TransformPositionScale(vec3(0.0, -3.0, 0.0), vec3(1.0, 1.0, 1.0)), GroundModelIndex, 0, 0 });
  
     //lights
    
    
-    app->lights.push_back({ LightType::LightType_Point,vec3(1.0,0.0,0.0),vec3(1.0,1.0,1.0),vec3(5.0,1.0,4.0) });
+   // app->lights.push_back({ LightType::LightType_Point,vec3(1.0,0.0,0.0),vec3(1.0,1.0,1.0),vec3(5.0,1.0,4.0) });
    //app->lights.push_back({ LightType::LightType_Point,vec3(1.0,0.0,0.0),vec3(1.0,1.0,1.0),vec3(2.0,1.0,-5.0) });
    //app->lights.push_back({ LightType::LightType_Point,vec3(1.0,1.0,0.0),vec3(1.0,1.0,1.0),vec3(4.0,0.0,6.0) });
    //app->lights.push_back({ LightType::LightType_Point,vec3(0.0,0.0,1.0),vec3(1.0,1.0,1.0),vec3(-2.0,-1.0,3.0) });
 
-
-
-
-   //app->lights.push_back({ LightType::LightType_Directional,vec3(0.0,0.0,1.0),vec3(0.0,0.0,-1.0),vec3(0.0,2.0,-6.0) });
-  // app->lights.push_back({ LightType::LightType_Directional,vec3(1.0,1.0,1.0),vec3(0.0,-1.0,0),vec3(0.0f, -1.0f, -0.0) });
- 
-    app->entities.push_back({ TransformPositionScale(vec3(0.0,2.0,-6.0), vec3(0.3f)),QuadLModelIndex,0,0 });
-    app->entities.push_back({ TransformPositionScale(vec3(0.0f, -1.0f, -0.0), vec3(0.3f)),QuadLModelIndex,0,0 });
-
+    //app->lights.push_back({ LightType::LightType_Directional,vec3(1.0,1.0,1.0),vec3(0.0,-0.0,0.0),vec3(0.0,0.0,0.0) });
+    app->lights.push_back({ LightType::LightType_Point,vec3(1.0,1.0,1.0),vec3(1.0,1.0,1.0),vec3(0.0,0.0,0.0) });
 
     app->ConfigureFrameBuffer(app->defferredFrameBuffer);
 

@@ -69,12 +69,12 @@ struct App
     
     std::vector<std::string> faces
     {
+            "SkyboxTextures/posx.jpg",
             "SkyboxTextures/negx.jpg",
-            "SkyboxTextures/negx.jpg",
-            "SkyboxTextures/negx.jpg",
-            "SkyboxTextures/negx.jpg",
-            "SkyboxTextures/negx.jpg",
-            "SkyboxTextures/negx.jpg"
+            "SkyboxTextures/posy.jpg",//top
+            "SkyboxTextures/negy.jpg",//bot
+            "SkyboxTextures/posz.jpg",
+            "SkyboxTextures/negz.jpg"
     };
 
     // program indices
