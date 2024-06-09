@@ -34,9 +34,16 @@ struct App
     const GLuint CreateTexture(const bool isFloatingPoint = false);
     // ---------------------------------------------------------------------------------------
     unsigned int loadCubemapTextures(std::vector<std::string> faces);
-    float* loadhdr(const char* filename);
-
+    void loadhdr();
+    void EquirrectangularToCubeMap();
+    void renderCube();
     float* hdrData;
+    unsigned int captureFBO, captureRBO;
+    unsigned int hdrTexture;
+    unsigned int cubeVAO = 0;
+    unsigned int cubeVBO = 0;
+
+    //char filename[] = "dwa";
     // ---------------------------------------------------------------------------------------
     // Loop
     f32  deltaTime;
@@ -66,6 +73,8 @@ struct App
     GLuint freamebufferToQuadShader;
     
     GLuint skyboxFragmentShaderToVertexShader;
+    GLuint equirrectangularToCubeMap;
+    GLuint backgroundShader;
     
     std::vector<std::string> faces
     {
@@ -84,7 +93,7 @@ struct App
     u32 patricioModel = 0;
     GLuint texturedMeshProgram_uTexture;
     
-    
+    unsigned int envCubemap;
 
     GLuint cubemapTexture;
 
